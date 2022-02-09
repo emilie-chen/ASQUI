@@ -5,11 +5,15 @@
 namespace AsquiEngine
 {
 
+class Engine;
+
 class Object
 {
 public:
-    virtual ~Object() = default;
+    Object() {}
     
+    virtual ~Object() = default;
+
     template <typename T, typename ... Args>
     static Ref<T> CreateRef(Args&& ... args)
     {
@@ -21,6 +25,18 @@ public:
     {
         return std::make_unique<T>(std::forward<Args>(args)...);
     }
+    
+protected:
+    Engine* m_Engine;
+    inline static Engine* engine;
+    
+private:
+    static void Init(Engine* engineInstance)
+    {
+        engine = engineInstance;
+    }
+    
+    friend class Engine;
 };
 
 }

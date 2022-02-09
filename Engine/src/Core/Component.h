@@ -6,9 +6,12 @@
 namespace AsquiEngine
 {
 
+class Engine;
+
 class Component : public Object
 {
 public:
+    Component() {}
 };
 
 }

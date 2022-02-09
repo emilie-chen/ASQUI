@@ -1,10 +1,12 @@
 #pragma once
 
+#include <iostream>
 #include <vector>
 #include <string>
 #include <memory>
 #include <unordered_map>
 #include <unordered_set>
+#include <queue>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -37,6 +39,9 @@ using Unique = std::unique_ptr<T>;
 template <typename T>
 using Weak = std::weak_ptr<T>;
 
+template <typename T>
+using Queue = std::queue<T>;
+
 #define TYPEDEF_FLOAT(count) using float##count = vec##count;
 
 TYPEDEF_FLOAT(2)
@@ -49,5 +54,24 @@ using float3x3 = mat3;
 
 using Quaternion = fquat;
 
+using EntityId = uint64_t;
+
+class Id final
+{
+public:
+    Id() = delete;
+    
+    static const EntityId NIL = 0;
+    
+    static EntityId New()
+    {
+        static std::atomic<EntityId> counter { 0 };
+        return ++counter;
+    }
+    
+};
+
 }
+
+#define nonnull(ptr) if (!ptr) { throw std::runtime_error(""); }
 
