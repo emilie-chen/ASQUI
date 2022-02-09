@@ -1,23 +1,22 @@
 #include <iostream>
 #include "Document.h"
 #include <glm/glm.hpp>
-#include "Engine.h"
+#include "AsquiEngine.h"
+
+using namespace AsquiEngine;
+
+class MyComponent : public Object
+{
+public:
+    MyComponent(int i)
+    {
+        std::cout << i << std::endl;
+    }
+};
 
 int main()
 {
-    Document doc
-    {
-        "Sam",
-        std::time(nullptr),
-        "Delivering cargos",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
-                " incididunt ut labore et dolore magna aliqua.\nUt enim ad minim veniam, quis nostrud"
-                " exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-    };
-
-    doc.print(std::cout);
-    
-    glm::vec3 v = { 0, 2, 3 };
+    Ref<MyComponent> c = Object::CreateRef<MyComponent>(10);
 
     return 0;
 }
