@@ -34,13 +34,15 @@ class Engine final : public Object
 public:
     Engine();
     void Start();
-    void OnUpdate();
     void Stop();
     void WaitFor();
     
     Ref<GameObject> NewGameObject();
     void DestroyGameObject(Ref<GameObject>);
     Scene* GetActiveScene();
+private:
+    void OnUpdate();
+    
 private:
     std::atomic_bool m_ShouldStop;
     std::mutex m_Mutex;
