@@ -10,4 +10,4 @@ target_include_directories(Engine
         ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
-target_link_libraries(Engine PRIVATE fmt::fmt fmt::fmt-header-only glm)
+target_link_libraries(Engine PRIVATE fmt::fmt fmt::fmt-header-only glm::glm)

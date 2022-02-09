@@ -10,4 +10,4 @@ target_include_directories(App
         ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
-target_link_libraries(App Engine glm)
+target_link_libraries(App Engine glm::glm)
