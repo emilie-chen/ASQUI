@@ -30,6 +30,7 @@ void EntityManager::OnUpdate()
         auto objectToDestroy = m_GameObjectsToDestroyNextFrame.front();
         m_GameObjectsToDestroyNextFrame.pop();
         
+        m_AllGameObjects.erase(objectToDestroy);
         if (objectToDestroy.use_count() > 1)
         {
             // used elsewhere
@@ -46,7 +47,9 @@ void EntityManager::OnUpdate()
             
             if (objectToDestroy.use_count() > 1)
             {
-                std::cerr << "WARNING : GameObject { ID = " << objectToDestroy->GetId() << " } is still in use when being requested to be destroyed";
+                std::stringstream ss;
+                ss << "GameObject { ID = " << objectToDestroy->GetId() << " } is still in use when being requested to be destroyed";
+                throw std::runtime_error(ss.str());
             }
         }
     }
@@ -84,6 +87,8 @@ void Engine::OnUpdate()
     std::cout << counter++ << std::endl;;
     std::cout.flush();
     
+    m_EntityManager->OnUpdate();
+    
     if (counter > 1000)
     {
         Stop();
@@ -113,6 +118,7 @@ Ref<GameObject> Engine::NewGameObject()
 void Engine::DestroyGameObject(Ref<GameObject> gameObject)
 {
     nonnull(gameObject);
+    m_EntityManager->QueueDestroyGameObject(gameObject);
 }
 
 Scene* Engine::GetActiveScene()
