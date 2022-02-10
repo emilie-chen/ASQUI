@@ -27,7 +27,6 @@ public:
     }
     
 protected:
-    Engine* m_Engine;
     inline static Engine* engine;
     
 private:
