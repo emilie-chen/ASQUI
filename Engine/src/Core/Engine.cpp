@@ -11,7 +11,7 @@ namespace AsquiEngine
 Ref<GameObject> EntityManager::NewGameObject()
 {
     auto obj = GameObject::New();
-    m_AllGameObjects[obj][typeid(Transform)] = CreateUniqueRef<Transform>();
+    m_AllGameObjects[obj][typeid(Transform)] = CreateRef<Transform>();
     return obj;
 }
 

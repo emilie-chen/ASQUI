@@ -6,12 +6,16 @@
 namespace AsquiEngine
 {
 
-class Engine;
-
 class Component : public Object
 {
 public:
     Component() {}
+    
+protected:
+    WeakRef<GameObject> gameObject;
+    
+    friend class Engine;
+    friend class EntityManager;
 };
 
 }

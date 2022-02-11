@@ -34,6 +34,20 @@ private:
         return std::static_pointer_cast<T>(m_AllGameObjects[gameObject][typeid(T)]);
     }
     
+    template <typename T>
+    WeakRef<T> AddComponent(Ref<GameObject> gameObject)
+    {
+        auto& components = m_AllGameObjects[gameObject];
+        if (!components.contains(typeid(T)))
+        {
+            auto newComponent = CreateRef<T>();
+            newComponent->gameObject = gameObject;
+            m_AllGameObjects[gameObject][typeid(T)] = newComponent;
+        }
+        
+        return std::static_pointer_cast<T>(components[typeid(T)]);
+    }
+    
     friend class Engine;
 };
 
@@ -53,6 +67,12 @@ public:
     WeakRef<T> GetComponent(Ref<GameObject> gameObject)
     {
         return m_EntityManager->GetComponent<T>(gameObject);
+    }
+    
+    template <typename T>
+    WeakRef<T> AddComponent(Ref<GameObject> gameObject)
+    {
+        return m_EntityManager->AddComponent<T>(gameObject);
     }
     
 private:

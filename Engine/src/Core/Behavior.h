@@ -2,6 +2,7 @@
 
 #include "Core.h"
 #include "Component.h"
+#include "Engine.h"
 
 namespace AsquiEngine
 {
@@ -22,9 +23,19 @@ public:
     
     WeakRef<Transform> GetTransform();
     
+    template <typename T>
+    typename std::enable_if<std::is_base_of<Component, T>::value, WeakRef<T>>::type GetComponent()
+    {
+        using_weak_ref(gameObject)
+        {
+            return engine->GetComponent<T>(_gameObject);
+        }
+    }
+    
+    virtual void Start() {}
+    virtual void OnUpdate() {}
+    
 private:
-    WeakRef<GameObject> gameObject;
-
     friend class Engine;
 };
 

@@ -5,4 +5,5 @@
 #include "Core/Component.h"
 #include "Core/GameObject.h"
 #include "Core/Scene.h"
+#include "Core/Behavior.h"
 #include "Components/Transform.h"
