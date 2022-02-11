@@ -10,4 +10,4 @@ target_include_directories(App
         ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
-target_link_libraries(App Engine glm::glm fmt::fmt fmt::fmt-header-only)
+target_link_libraries(App Engine glm::glm fmt::fmt fmt::fmt-header-only spdlog::spdlog)

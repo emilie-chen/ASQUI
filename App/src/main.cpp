@@ -9,7 +9,13 @@ int main()
     Engine engine;
     {
         auto obj = engine.NewGameObject();
-        fmt::print(obj->ToString());
+        info(obj->ToString());
+        auto transform = engine.GetComponent<Transform>(obj);
+        using_weak_ref(transform)
+        {
+            print(_transform->ToString());
+        }
+        
         engine.DestroyGameObject(obj);
     }
     engine.Start();

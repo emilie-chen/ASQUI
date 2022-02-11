@@ -12,6 +12,7 @@ namespace AsquiEngine
 
 class GameObject;
 class Scene;
+class Component;
 
 class EntityManager : public Object
 {
@@ -20,11 +21,18 @@ public:
     
 private:
     Ref<GameObject> NewGameObject();
+    
     void QueueDestroyGameObject(Ref<GameObject>);
     void OnUpdate();
     
-    Set<Ref<GameObject>> m_AllGameObjects;
+    Map<Ref<GameObject>, Map<std::type_index, Ref<Component>>> m_AllGameObjects;
     Queue<Ref<GameObject>> m_GameObjectsToDestroyNextFrame;
+    
+    template <typename T>
+    WeakRef<T> GetComponent(Ref<GameObject> gameObject)
+    {
+        return std::static_pointer_cast<T>(m_AllGameObjects[gameObject][typeid(T)]);
+    }
     
     friend class Engine;
 };
@@ -40,6 +48,13 @@ public:
     Ref<GameObject> NewGameObject();
     void DestroyGameObject(Ref<GameObject>);
     Scene* GetActiveScene();
+    
+    template <typename T>
+    WeakRef<T> GetComponent(Ref<GameObject> gameObject)
+    {
+        return m_EntityManager->GetComponent<T>(gameObject);
+    }
+    
 private:
     void OnUpdate();
     
@@ -49,8 +64,8 @@ private:
     std::thread m_MainThread;
     std::condition_variable m_StopCondition;
     
-    Unique<EntityManager> m_EntityManager;
-    Unique<Scene> m_ActiveScene;
+    UniqueRef<EntityManager> m_EntityManager;
+    UniqueRef<Scene> m_ActiveScene;
     
 };
 

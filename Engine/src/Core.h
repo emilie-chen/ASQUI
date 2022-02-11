@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include <vector>
 #include <string>
 #include <memory>
@@ -8,6 +7,9 @@
 #include <unordered_set>
 #include <queue>
 #include <sstream>
+#include <type_traits>
+#include <typeindex>
+#include <spdlog/spdlog.h>
 #include <fmt/core.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -36,10 +38,10 @@ template <typename T>
 using Ref = std::shared_ptr<T>;
 
 template <typename T>
-using Unique = std::unique_ptr<T>;
+using UniqueRef = std::unique_ptr<T>;
 
 template <typename T>
-using Weak = std::weak_ptr<T>;
+using WeakRef = std::weak_ptr<T>;
 
 template <typename T>
 using Queue = std::queue<T>;
@@ -96,9 +98,56 @@ public:
     PanicError(const String& msg = "") : RuntimeError(msg) {}
 };
 
-}
-
 #define nonnull(ptr) if (!ptr) { throw AsquiEngine::NullPointerError(#ptr, __FILE__, __LINE__); }
 #define panic_with(msg) throw AsquiEngine::PanicError(msg)
 #define panic() panic_with("")
 
+template <typename ... T>
+void info(T&& ... args)
+{
+    spdlog::info(args...);
+}
+
+template <typename ... T>
+void print(T&& ... args)
+{
+    info(args...);
+}
+
+template <typename ... T>
+void warn(T&& ... args)
+{
+    spdlog::warn(args...);
+}
+
+template <typename ... T>
+void error(T&& ... args)
+{
+    spdlog::error(args...);
+}
+
+template <typename ... T>
+void fatal(T&& ... args)
+{
+    spdlog::critical(args...);
+    panic();
+}
+
+template <typename T>
+String GetString(const T& t)
+{
+    return t->ToString();
+}
+
+template <>
+String GetString<float2>(const float2& vec);
+template <>
+String GetString<float3>(const float3& vec);
+template <>
+String GetString<float4>(const float4& vec);
+template <>
+String GetString<Quaternion>(const Quaternion& quat);
+
+}
+
+#define using_weak_ref(weak_ref) if (auto _##weak_ref = weak_ref.lock())

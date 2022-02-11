@@ -1,6 +1,8 @@
 #include "Engine.h"
 #include "GameObject.h"
 #include "Scene.h"
+#include "Component.h"
+#include "../Components/Transform.h"
 
 #include <thread>
 
@@ -9,7 +11,7 @@ namespace AsquiEngine
 Ref<GameObject> EntityManager::NewGameObject()
 {
     auto obj = GameObject::New();
-    m_AllGameObjects.insert(obj);
+    m_AllGameObjects[obj][typeid(Transform)] = CreateUniqueRef<Transform>();
     return obj;
 }
 
@@ -47,21 +49,20 @@ void EntityManager::OnUpdate()
             
             if (objectToDestroy.use_count() > 1)
             {
-                std::stringstream ss;
-                ss << "GameObject { ID = " << objectToDestroy->GetId() << " } is still in use when being requested to be destroyed";
-                throw std::runtime_error(ss.str());
+                spdlog::warn("GameObject {{ ID = {} }} is still in use when being requested to be destroyed", objectToDestroy->GetInstanceID());
+                delete objectToDestroy.get();
             }
         }
     }
 }
 
 Engine::Engine() :
-    m_EntityManager(CreateUnique<EntityManager>())
+    m_EntityManager(CreateUniqueRef<EntityManager>())
 {
     Object::Init(this);
 
     // default scene
-    m_ActiveScene = CreateUnique<Scene>();
+    m_ActiveScene = CreateUniqueRef<Scene>();
 }
 
 void Engine::Start()
@@ -84,12 +85,11 @@ void Engine::Start()
 void Engine::OnUpdate()
 {
     static size_t counter = 0;
-    std::cout << counter++ << std::endl;;
-    std::cout.flush();
+    print(counter++);
     
     m_EntityManager->OnUpdate();
     
-    if (counter > 1000)
+    if (counter > 200)
     {
         Stop();
     }

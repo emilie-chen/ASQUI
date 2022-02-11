@@ -8,7 +8,9 @@ namespace AsquiEngine
 class Transform : public Component
 {
 public:
-    Transform()
+    Transform() :
+        m_Scale(1.0f, 1.0f, 1.0f),
+        m_Rotation(glm::quat_identity<float, defaultp>())
     {
         
     }
@@ -44,6 +46,7 @@ public:
     }
     
     float4x4 GetTransformationMatrix() const;
+    virtual String ToString() const override;
     
 private:
     float3 m_Position;

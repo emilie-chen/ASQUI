@@ -6,6 +6,7 @@ namespace AsquiEngine
 {
 
 class Engine;
+class GameObject;
 
 class Object
 {
@@ -21,12 +22,15 @@ public:
     }
     
     template <typename T, typename ... Args>
-    static Unique<T> CreateUnique(Args&& ... args)
+    static UniqueRef<T> CreateUniqueRef(Args&& ... args)
     {
         return std::make_unique<T>(std::forward<Args>(args)...);
     }
     
     virtual String ToString() const;
+    int64_t GetInstanceID() const;
+    static void Destroy(Ref<GameObject> object);
+    
     
 protected:
     inline static Engine* engine;

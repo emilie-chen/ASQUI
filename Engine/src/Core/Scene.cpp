@@ -1,5 +1,4 @@
 #include "Scene.h"
-#include "Engine.h"
 
 namespace AsquiEngine
 {
