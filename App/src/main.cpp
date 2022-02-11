@@ -6,15 +6,23 @@ using namespace AsquiEngine;
 
 class TestBehavior : public Behavior
 {
+private:
+    int counter;
+    
 public:
     virtual void Start() override
     {
-        print("I am startign");
+        print("I am starting");
+        counter = 0;
     }
     
     virtual void OnUpdate() override
     {
-        print(this == GetComponent<TestBehavior>().lock().get());
+        print(counter++);
+        if (counter > 200)
+        {
+            Application::Quit();
+        }
     }
 };
 
@@ -39,7 +47,7 @@ int main()
                 print(_transform->ToString());
             }
             
-            engine.DestroyGameObject(_obj);
+            //engine.DestroyGameObject(_obj);
         }
         
     }

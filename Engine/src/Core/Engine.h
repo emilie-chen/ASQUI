@@ -56,7 +56,7 @@ class Engine final : public Object
 public:
     Engine();
     void Start();
-    void Stop();
+    void Stop(int exitCode = 0);
     void WaitFor();
     
     Ref<GameObject> NewGameObject();
@@ -83,6 +83,7 @@ private:
     std::mutex m_Mutex;
     std::thread m_MainThread;
     std::condition_variable m_StopCondition;
+    std::atomic_int m_ExitCode;
     
     UniqueRef<EntityManager> m_EntityManager;
     UniqueRef<Scene> m_ActiveScene;

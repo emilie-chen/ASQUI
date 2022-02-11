@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Scene.h"
 #include "Component.h"
+#include "Application.h"
 #include "../Components/Transform.h"
 
 #include <thread>
@@ -27,6 +28,15 @@ void EntityManager::OnUpdate()
     // engien will first ensure that the active scene does not contain any game objects that need to be deleted
     
     auto activeScene = engine->GetActiveScene();
+    // update all scene objects
+    for (auto& [_, components] : m_AllGameObjects)
+    {
+        for (auto& [_, component] : components)
+        {
+            component->OnUpdate();
+        }
+    }
+    
     while (!m_GameObjectsToDestroyNextFrame.empty())
     {
         auto objectToDestroy = m_GameObjectsToDestroyNextFrame.front();
@@ -60,7 +70,7 @@ Engine::Engine() :
     m_EntityManager(CreateUniqueRef<EntityManager>())
 {
     Object::Init(this);
-
+    Application::Init(this);
     // default scene
     m_ActiveScene = CreateUniqueRef<Scene>();
 }
@@ -84,26 +94,20 @@ void Engine::Start()
 
 void Engine::OnUpdate()
 {
-    static size_t counter = 0;
-    print(counter++);
-    
     m_EntityManager->OnUpdate();
-    
-    if (counter > 200)
-    {
-        Stop();
-    }
 }
 
-void Engine::Stop()
+void Engine::Stop(int exitCode)
 {
     m_ShouldStop = true;
+    m_ExitCode = exitCode;
 }
 
 void Engine::WaitFor()
 {
     std::unique_lock<std::mutex> lock(m_Mutex);
     m_StopCondition.wait(lock, [this]{ return m_ShouldStop.load(); });
+    exit(m_ExitCode.load());
 }
 
 Ref<GameObject> Engine::NewGameObject()

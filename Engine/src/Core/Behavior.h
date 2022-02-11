@@ -32,9 +32,6 @@ public:
         }
     }
     
-    virtual void Start() {}
-    virtual void OnUpdate() {}
-    
 private:
     friend class Engine;
 };

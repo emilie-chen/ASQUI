@@ -11,6 +11,9 @@ class Component : public Object
 public:
     Component() {}
     
+    virtual void Start() {}
+    virtual void OnUpdate() {}
+    
 protected:
     WeakRef<GameObject> gameObject;
     

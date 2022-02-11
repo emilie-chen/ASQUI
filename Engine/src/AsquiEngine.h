@@ -6,4 +6,5 @@
 #include "Core/GameObject.h"
 #include "Core/Scene.h"
 #include "Core/Behavior.h"
+#include "Core/Application.h"
 #include "Components/Transform.h"
