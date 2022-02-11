@@ -26,6 +26,8 @@ public:
         return std::make_unique<T>(std::forward<Args>(args)...);
     }
     
+    virtual String ToString() const;
+    
 protected:
     inline static Engine* engine;
     

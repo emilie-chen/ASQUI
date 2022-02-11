@@ -6,10 +6,10 @@ using namespace AsquiEngine;
 
 int main()
 {
-    panic();
     Engine engine;
     {
         auto obj = engine.NewGameObject();
+        fmt::print(obj->ToString());
         engine.DestroyGameObject(obj);
     }
     engine.Start();
