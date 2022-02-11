@@ -6,6 +6,7 @@ using namespace AsquiEngine;
 
 int main()
 {
+    panic();
     Engine engine;
     {
         auto obj = engine.NewGameObject();

@@ -8,6 +8,7 @@
 #include <unordered_set>
 #include <queue>
 #include <sstream>
+#include <fmt/core.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -72,7 +73,32 @@ public:
     
 };
 
+template <typename T>
+class RuntimeError : public std::runtime_error
+{
+public:
+    RuntimeError(const String& msg = "") :
+        std::runtime_error(fmt::format("Message: {}", msg))
+    {}
+};
+
+class NullPointerError : public RuntimeError<NullPointerError>
+{
+public:
+    NullPointerError(const String& pointer, const String& file, int lineNum)
+        : RuntimeError(fmt::format("{} is null in file {} on line {}", pointer, file, lineNum))
+    {}
+};
+
+class PanicError : public RuntimeError<PanicError>
+{
+public:
+    PanicError(const String& msg = "") : RuntimeError(msg) {}
+};
+
 }
 
-#define nonnull(ptr) if (!ptr) { throw std::runtime_error(""); }
+#define nonnull(ptr) if (!ptr) { throw AsquiEngine::NullPointerError(#ptr, __FILE__, __LINE__); }
+#define panic_with(msg) throw AsquiEngine::PanicError(msg)
+#define panic() panic_with("")
 
