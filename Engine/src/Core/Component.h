@@ -11,6 +11,7 @@ class Component : public Object
 public:
     Component() {}
     
+    virtual void Awake() {}
     virtual void Start() {}
     virtual void OnUpdate() {}
     

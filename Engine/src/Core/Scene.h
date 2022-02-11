@@ -12,6 +12,8 @@ class GameObject;
 class Scene : public Object
 {
 public:
+    void OnLoad();
+    void OnUnload();
     
 private:
     void AddGameObject(Ref<GameObject>);
