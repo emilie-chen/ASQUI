@@ -4,12 +4,6 @@
 
 using namespace AsquiEngine;
 
-class HugeComponent : public Behavior
-{
-private:
-    int arr[100000];
-};
-
 class TestBehavior : public Behavior
 {
 private:
@@ -24,11 +18,8 @@ public:
     
     virtual void OnUpdate() override
     {
+        system("clear");
         print(counter++);
-        auto ref = engine->NewGameObject();
-        engine->AddComponent<HugeComponent>(ref);
-        engine->AddComponent<TestBehavior>(ref);
-        Destroy(ref);
         if (counter > 100)
         {
             Application::Quit();
