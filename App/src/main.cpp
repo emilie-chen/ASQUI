@@ -63,7 +63,7 @@ public:
             print(getch());
         }
         
-        if (counter > 40)
+        if (counter > 60)
         {
             Application::Quit();
         }

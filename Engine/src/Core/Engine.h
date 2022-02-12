@@ -2,7 +2,6 @@
 
 #include "Core.h"
 #include "Object.h"
-#include "Platform/NativeInput.h"
 
 #include <mutex>
 #include <thread>
@@ -15,6 +14,7 @@ class GameObject;
 class Scene;
 class Component;
 class RenderingManager;
+namespace Platform { class NativeInputManager; }
 
 class EntityManager : public Object
 {
@@ -88,9 +88,11 @@ private:
     std::atomic_int m_ExitCode;
     
     UniqueRef<EntityManager> m_EntityManager;
+    UniqueRef<Platform::NativeInputManager> m_NativeInputManager;
     UniqueRef<RenderingManager> m_RenderingManager;
     UniqueRef<Scene> m_ActiveScene;
-    UniqueRef<Platform::NativeInputManager> m_NativeInputManager;
+    
+    friend class RenderingManager;
 };
 
 }

@@ -5,6 +5,7 @@
 #include "Application.h"
 #include "RenderingManager.h"
 #include "../Components/Transform.h"
+#include "../Platform/NativeInput.h"
 
 #include <thread>
 
@@ -69,13 +70,13 @@ void EntityManager::OnUpdate()
 
 Engine::Engine() :
     m_EntityManager(CreateUniqueRef<EntityManager>()),
-    m_RenderingManager(CreateUniqueRef<RenderingManager>()),
     m_NativeInputManager(CreateUniqueRef<Platform::NativeInputManager>())
 {
     Object::Init(this);
     Application::Init(this);
     // default scene
     m_ActiveScene = CreateUniqueRef<Scene>();
+    m_RenderingManager = CreateUniqueRef<RenderingManager>();
 }
 
 void Engine::Start()

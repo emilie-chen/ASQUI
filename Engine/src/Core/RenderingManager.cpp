@@ -1,5 +1,6 @@
 #include "RenderingManager.h"
 #include "../Platform/NativeInput.h"
+#include "Engine.h"
 #include <iostream>
 
 namespace AsquiEngine
@@ -10,10 +11,33 @@ RenderingManager::RenderingManager()
     auto size = Platform::GetConsoleDimensions();
     m_Width = size.x;
     m_Height = size.y;
+    
+    InitBufferWith(size.x, size.y);
+    
+    engine->m_NativeInputManager->AddConsoleDimensionChangedListener(
+        [this](const auto& newDim)
+        {
+            // reinitialize buffer
+            InitBufferWith(newDim.x, newDim.y);
+        });
+}
+
+void RenderingManager::InitBufferWith(size_t width, size_t height)
+{
+    m_Width = width;
+    m_Height = height;
     m_Buffer.resize(m_Width);
     for (size_t x = 0; x < m_Width; x++)
     {
         m_Buffer[x].resize(m_Height);
+    }
+    
+    for (size_t x = 0; x < m_Width; x++)
+    {
+        for (size_t y = 0; y < m_Height; y++)
+        {
+            m_Buffer[x][y] = std::make_tuple(' ', Code::BG_DEFAULT);
+        }
     }
 }
 

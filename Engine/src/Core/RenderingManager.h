@@ -36,6 +36,9 @@ public:
     void OnUpdate();
     
 private:
+    void InitBufferWith(size_t width, size_t height);
+    
+private:
     int m_Width, m_Height;
     List<List<Tuple<char, Code>>> m_Buffer;
 };
