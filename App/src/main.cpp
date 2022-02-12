@@ -56,6 +56,8 @@ public:
     {
         system("clear");
         print(counter++);
+        auto dim = GetConsoleDimensions();
+        print(fmt::format("{{{}, {}}}", dim.x, dim.y));
         if (kbhit())
         {
             print(getch());
