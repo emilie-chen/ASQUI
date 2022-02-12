@@ -24,16 +24,18 @@ RenderingManager::RenderingManager() :
 
 void RenderingManager::OnUpdate()
 {
-    system("clear");
+    std::stringstream ss;
     for (size_t x = 0; x < m_Width; x++)
     {
         for (size_t y = 0; y < m_Height; y++)
         {
             auto& [c, color] = m_Buffer[x][y];
-            std::cout << Modifier(color);
-            std::cout << c;
+            ss << Modifier(color);
+            ss << c;
         }
     }
+    system("clear");
+    std::cout << ss.str();
     std::cout.flush();
 }
 
