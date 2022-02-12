@@ -3,7 +3,7 @@
 
 build-osx/
 build/
-build-windows/
+build-win/
 build-linux/
 build-darwin/
 
