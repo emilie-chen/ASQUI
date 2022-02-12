@@ -4,6 +4,12 @@
 
 using namespace AsquiEngine;
 
+class HugeComponent : public Behavior
+{
+private:
+    int arr[100000];
+};
+
 class TestBehavior : public Behavior
 {
 private:
@@ -19,7 +25,11 @@ public:
     virtual void OnUpdate() override
     {
         print(counter++);
-        if (counter > 200)
+        auto ref = engine->NewGameObject();
+        engine->AddComponent<HugeComponent>(ref);
+        engine->AddComponent<TestBehavior>(ref);
+        Destroy(ref);
+        if (counter > 100)
         {
             Application::Quit();
         }
@@ -34,20 +44,7 @@ int main()
         using_weak_ref(obj)
         {
             info(_obj->ToString());
-            auto transform = engine.GetComponent<Transform>(_obj);
-            auto testBehavior = engine.AddComponent<TestBehavior>(_obj);
-            
-            using_weak_ref(testBehavior)
-            {
-                _testBehavior->OnUpdate();
-            }
-
-            using_weak_ref(transform)
-            {
-                print(_transform->ToString());
-            }
-            
-            //engine.DestroyGameObject(_obj);
+            engine.AddComponent<TestBehavior>(_obj);
         }
         
     }
