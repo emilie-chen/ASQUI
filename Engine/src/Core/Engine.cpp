@@ -99,7 +99,8 @@ void Engine::Start()
 void Engine::OnUpdate()
 {
     m_EntityManager->OnUpdate();
-    m_RenderingManager->OnUpdate();
+    auto& gameObjects = m_EntityManager->m_AllGameObjects;
+    m_RenderingManager->OnUpdate(gameObjects);
     m_NativeInputManager->OnUpdate();
 }
 

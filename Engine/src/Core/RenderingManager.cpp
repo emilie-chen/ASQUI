@@ -1,6 +1,8 @@
 #include "RenderingManager.h"
 #include "../Platform/NativeInput.h"
 #include "Engine.h"
+#include "Component.h"
+#include "../Components/Renderer.h"
 #include <iostream>
 
 namespace AsquiEngine
@@ -41,19 +43,31 @@ void RenderingManager::InitBufferWith(size_t width, size_t height)
     }
 }
 
-void RenderingManager::OnUpdate()
+void RenderingManager::OnUpdate(Map<Ref<GameObject>, Map<std::type_index, Ref<Component>>>& gameObjects)
 {
+//    {
+//        static int counter;
+//        for (size_t x = 0; x < m_Width; x++)
+//        {
+//            for (size_t y = 0; y < m_Height; y++)
+//            {
+//                m_Buffer[x][y] = std::make_tuple(' ', Code::BG_RED);
+//            }
+//        }
+//        std::get<1>(m_Buffer[counter / 3][5]) = Code::BG_BLUE;
+//        counter++;
+//    }
+//
+    for (auto& [_, components] : gameObjects)
     {
-        static int counter;
-        for (size_t x = 0; x < m_Width; x++)
+        for (auto& [_, component] : components)
         {
-            for (size_t y = 0; y < m_Height; y++)
+            auto componentAsRenderer = std::dynamic_pointer_cast<Renderer>(component);
+            if (componentAsRenderer)
             {
-                m_Buffer[x][y] = std::make_tuple(' ', Code::BG_RED);
+                componentAsRenderer->Render(this);
             }
         }
-        std::get<1>(m_Buffer[counter / 3][5]) = Code::BG_BLUE;
-        counter++;
     }
     
     std::stringstream ss;
@@ -69,6 +83,11 @@ void RenderingManager::OnUpdate()
     system("clear");
     std::cout << ss.str();
     std::cout.flush();
+}
+
+void RenderingManager::DrawPixel(int x, int y, Code color)
+{
+    
 }
 
 }

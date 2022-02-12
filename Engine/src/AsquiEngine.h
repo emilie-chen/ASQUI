@@ -9,3 +9,5 @@
 #include "Core/Application.h"
 #include "Core/RenderingManager.h"
 #include "Components/Transform.h"
+#include "Platform/NativeInput.h"
+#include "Platform/NativeKeyboard.h"

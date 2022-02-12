@@ -6,19 +6,22 @@
 namespace AsquiEngine
 {
 
+class Component;
+
 class RenderingManager : public Object
 {
 public:
     enum Code
     {
-        FG_RED      = 31,
-        FG_GREEN    = 32,
-        FG_BLUE     = 34,
-        FG_DEFAULT  = 39,
-        BG_RED      = 41,
-        BG_GREEN    = 42,
-        BG_BLUE     = 44,
-        BG_DEFAULT  = 49
+        BG_BLACK = 40,
+        BG_RED = 41,
+        BG_GREEN = 42,
+        BG_YELLOW = 43,
+        BG_BLUE = 44,
+        BG_MAGENTA = 45,
+        BG_CYAN = 46,
+        BG_WHITE = 47,
+        BG_DEFAULT = 49
     };
     
     class Modifier
@@ -33,7 +36,8 @@ public:
     };
     
     RenderingManager();
-    void OnUpdate();
+    void OnUpdate(Map<Ref<GameObject>, Map<std::type_index, Ref<Component>>>& gameObjects);
+    void DrawPixel(int x, int y, Code color);
     
 private:
     void InitBufferWith(size_t width, size_t height);
