@@ -6,6 +6,7 @@
 #include "RenderingManager.h"
 #include "../Components/Transform.h"
 #include "../Platform/NativeInput.h"
+#include "../Core/Time.h"
 
 #include <thread>
 
@@ -28,7 +29,7 @@ void EntityManager::OnUpdate()
 {
     // destroy all game objects that were queued
     // engien will first ensure that the active scene does not contain any game objects that need to be deleted
-    
+
     auto activeScene = engine->GetActiveScene();
     // update all scene objects
     for (auto& [_, components] : m_AllGameObjects)
@@ -38,12 +39,12 @@ void EntityManager::OnUpdate()
             component->OnUpdate();
         }
     }
-    
+
     while (!m_GameObjectsToDestroyNextFrame.empty())
     {
         auto objectToDestroy = m_GameObjectsToDestroyNextFrame.front();
         m_GameObjectsToDestroyNextFrame.pop();
-        
+
         m_AllGameObjects.erase(objectToDestroy);
         if (objectToDestroy.use_count() > 1)
         {
@@ -58,7 +59,7 @@ void EntityManager::OnUpdate()
                     allSceneGameObjects.erase(objectToDestroy);
                 }
             }
-            
+
             if (objectToDestroy.use_count() > 1)
             {
                 spdlog::warn("GameObject {{ ID = {} }} is still in use when being requested to be destroyed", objectToDestroy->GetInstanceID());
@@ -98,6 +99,11 @@ void Engine::Start()
 
 void Engine::OnUpdate()
 {
+    static auto prevTime = std::chrono::system_clock::now();
+    auto currTime = std::chrono::system_clock::now();
+        Time::s_DeltaTime = std::chrono::duration<float>(prevTime - currTime).count();
+    prevTime = currTime;
+
     m_EntityManager->OnUpdate();
     auto& gameObjects = m_EntityManager->m_AllGameObjects;
     m_RenderingManager->OnUpdate(gameObjects);
