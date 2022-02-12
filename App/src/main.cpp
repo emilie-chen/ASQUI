@@ -54,39 +54,37 @@ public:
     
     virtual void OnUpdate() override
     {
-        //print(counter++);
-        //auto dim = GetConsoleDimensions();
-        //print(fmt::format("{{{}, {}}}", dim.x, dim.y));
         auto transform = GetComponent<Transform>();
         using_weak_ref(transform)
         {
             auto pos = _transform->GetPosition();
-            if (kbhit())
+            while (kbhit())
             {
                 char input = getch();
+                auto movementAmount = 10 * Time::GetDeltaTime();
                 switch (input)
                 {
                     case 'a':
                     {
-                        pos.x -= 1;
+                        pos.x -= movementAmount;
                         _transform->SetPosition(pos);
                         break;
                     }
                     case 'd':
                     {
-                        pos.x += 1;
+                        pos.x += movementAmount;
                         _transform->SetPosition(pos);
                         break;
                     }
                     case 'w':
                     {
-                        pos.y -= 1;
+                        pos.y -= movementAmount;
                         _transform->SetPosition(pos);
                         break;
                     }
                     case 's':
                     {
-                        pos.y += 1;
+                        pos.y += movementAmount;
                         _transform->SetPosition(pos);
                         break;
                     }

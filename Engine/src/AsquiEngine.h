@@ -8,6 +8,7 @@
 #include "Core/Behavior.h"
 #include "Core/Application.h"
 #include "Core/RenderingManager.h"
+#include "Core/Time.h"
 #include "Components/Renderer.h"
 #include "Components/Transform.h"
 #include "Platform/NativeInput.h"

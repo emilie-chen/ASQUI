@@ -101,7 +101,7 @@ void Engine::OnUpdate()
 {
     static auto prevTime = std::chrono::system_clock::now();
     auto currTime = std::chrono::system_clock::now();
-        Time::s_DeltaTime = std::chrono::duration<float>(prevTime - currTime).count();
+    Time::s_DeltaTime = std::chrono::duration<float>(currTime - prevTime).count();
     prevTime = currTime;
 
     m_EntityManager->OnUpdate();
