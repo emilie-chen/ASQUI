@@ -52,5 +52,16 @@ namespace AsquiEngine {
         }
 
 
+        void NativeInputManager::OnUpdate() {
+            static auto prevDimensions = GetConsoleDimensions();
+            if (prevDimensions != GetConsoleDimensions()) {
+                auto currDimensions = GetConsoleDimensions();
+                for (auto f: m_FunctionList) {
+                    f(currDimensions);
+                }
+                prevDimensions = currDimensions;
+            }
+
+        }
     }
 }

@@ -2,6 +2,7 @@
 
 #include "Core.h"
 #include "Object.h"
+#include "Platform/NativeInput.h"
 
 #include <mutex>
 #include <thread>
@@ -89,7 +90,7 @@ private:
     UniqueRef<EntityManager> m_EntityManager;
     UniqueRef<RenderingManager> m_RenderingManager;
     UniqueRef<Scene> m_ActiveScene;
-    
+    UniqueRef<Platform::NativeInputManager> m_NativeInputManager;
 };
 
 }

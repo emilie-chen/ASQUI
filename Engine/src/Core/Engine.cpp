@@ -69,7 +69,8 @@ void EntityManager::OnUpdate()
 
 Engine::Engine() :
     m_EntityManager(CreateUniqueRef<EntityManager>()),
-    m_RenderingManager(CreateUniqueRef<RenderingManager>())
+    m_RenderingManager(CreateUniqueRef<RenderingManager>()),
+    m_NativeInputManager(CreateUniqueRef<Platform::NativeInputManager>())
 {
     Object::Init(this);
     Application::Init(this);
@@ -98,6 +99,7 @@ void Engine::OnUpdate()
 {
     m_EntityManager->OnUpdate();
     m_RenderingManager->OnUpdate();
+    m_NativeInputManager->OnUpdate();
 }
 
 void Engine::Stop(int exitCode)
@@ -132,4 +134,7 @@ Scene* Engine::GetActiveScene()
 {
     return m_ActiveScene.get();
 }
+
+
+
 }
