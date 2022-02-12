@@ -84,7 +84,7 @@ void Engine::Start()
     {
         while (!m_ShouldStop)
         {
-            std::this_thread::sleep_for(std::chrono::microseconds(33333));
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
             OnUpdate();
         }
         {
