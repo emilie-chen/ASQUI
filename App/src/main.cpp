@@ -54,7 +54,6 @@ public:
     
     virtual void OnUpdate() override
     {
-        system("clear");
         print(counter++);
         if (kbhit())
         {
