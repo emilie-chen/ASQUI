@@ -37,7 +37,7 @@ public:
     
     RenderingManager();
     void OnUpdate(Map<Ref<GameObject>, Map<std::type_index, Ref<Component>>>& gameObjects);
-    void DrawPixel(int x, int y, Code color);
+    void DrawPixel(WeakRef<GameObject> gameObject, int x, int y, Code color);
     
 private:
     void InitBufferWith(size_t width, size_t height);

@@ -2,7 +2,9 @@
 #include "../Platform/NativeInput.h"
 #include "Engine.h"
 #include "Component.h"
+#include "GameObject.h"
 #include "../Components/Renderer.h"
+#include "../Components/Transform.h"
 #include <iostream>
 
 namespace AsquiEngine
@@ -45,19 +47,16 @@ void RenderingManager::InitBufferWith(size_t width, size_t height)
 
 void RenderingManager::OnUpdate(Map<Ref<GameObject>, Map<std::type_index, Ref<Component>>>& gameObjects)
 {
-//    {
-//        static int counter;
-//        for (size_t x = 0; x < m_Width; x++)
-//        {
-//            for (size_t y = 0; y < m_Height; y++)
-//            {
-//                m_Buffer[x][y] = std::make_tuple(' ', Code::BG_RED);
-//            }
-//        }
-//        std::get<1>(m_Buffer[counter / 3][5]) = Code::BG_BLUE;
-//        counter++;
-//    }
-//
+    {
+        for (size_t x = 0; x < m_Width; x++)
+        {
+            for (size_t y = 0; y < m_Height; y++)
+            {
+                m_Buffer[x][y] = std::make_tuple(' ', Code::BG_DEFAULT);
+            }
+        }
+    }
+
     for (auto& [_, components] : gameObjects)
     {
         for (auto& [_, component] : components)
@@ -85,9 +84,21 @@ void RenderingManager::OnUpdate(Map<Ref<GameObject>, Map<std::type_index, Ref<Co
     std::cout.flush();
 }
 
-void RenderingManager::DrawPixel(int x, int y, Code color)
+void RenderingManager::DrawPixel(WeakRef<GameObject> gameObject, int x, int y, Code color)
 {
-    
+    using_weak_ref(gameObject)
+    {
+        const auto transform = engine->GetComponent<Transform>(_gameObject);
+        using_weak_ref(transform)
+        {
+            const auto position = _transform->GetPosition();
+            int targetX = position.x + x;
+            int targetY = position.y + y;
+            if (targetX >= m_Width || targetX < 0 || targetY >= m_Height || targetY < 0)
+                return;
+            m_Buffer[targetX][targetY] = std::make_tuple(' ', color);
+        }
+    }
 }
 
 }

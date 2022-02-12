@@ -55,17 +55,63 @@ public:
     virtual void OnUpdate() override
     {
         //print(counter++);
-        counter++;
         //auto dim = GetConsoleDimensions();
         //print(fmt::format("{{{}, {}}}", dim.x, dim.y));
-        if (kbhit())
+        auto transform = GetComponent<Transform>();
+        using_weak_ref(transform)
         {
-            print(getch());
+            auto pos = _transform->GetPosition();
+            if (kbhit())
+            {
+                char input = getch();
+                switch (input)
+                {
+                    case 'a':
+                    {
+                        pos.x -= 1;
+                        _transform->SetPosition(pos);
+                        break;
+                    }
+                    case 'd':
+                    {
+                        pos.x += 1;
+                        _transform->SetPosition(pos);
+                        break;
+                    }
+                    case 'w':
+                    {
+                        pos.y -= 1;
+                        _transform->SetPosition(pos);
+                        break;
+                    }
+                    case 's':
+                    {
+                        pos.y += 1;
+                        _transform->SetPosition(pos);
+                        break;
+                    }
+                    case 'q':
+                    {
+                        Application::Quit();
+                        break;
+                    }
+                }
+            }
         }
-        
-        if (counter > 60)
+    }
+};
+
+class TestRenderer : public Renderer
+{
+public:
+    virtual void Render(RenderingManager* manager) override
+    {
+        for (int x = 0; x < 4; x++)
         {
-            Application::Quit();
+            for (int y = 0; y < 4; y++)
+            {
+                manager->DrawPixel(gameObject, x, y, RenderingManager::Code::BG_MAGENTA);
+            }
         }
     }
 };
@@ -102,6 +148,7 @@ int main()
         {
             info(_obj->ToString());
             engine.AddComponent<TestBehavior>(_obj);
+            engine.AddComponent<TestRenderer>(_obj);
         }
         
     }
