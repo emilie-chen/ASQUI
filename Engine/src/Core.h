@@ -7,6 +7,8 @@
 #include <unordered_set>
 #include <queue>
 #include <sstream>
+#include <iostream>
+#include <tuple>
 #include <type_traits>
 #include <typeindex>
 #include <spdlog/spdlog.h>
@@ -45,6 +47,12 @@ using WeakRef = std::weak_ptr<T>;
 
 template <typename T>
 using Queue = std::queue<T>;
+
+template <typename ... T>
+using Tuple = std::tuple<T...>;
+
+template <typename T1, typename T2>
+using Pair = std::pair<T1, T2>;
 
 #define TYPEDEF_FLOAT(count) using float##count = vec##count;
 

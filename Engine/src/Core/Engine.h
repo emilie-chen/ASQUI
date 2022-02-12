@@ -13,6 +13,7 @@ namespace AsquiEngine
 class GameObject;
 class Scene;
 class Component;
+class RenderingManager;
 
 class EntityManager : public Object
 {
@@ -86,6 +87,7 @@ private:
     std::atomic_int m_ExitCode;
     
     UniqueRef<EntityManager> m_EntityManager;
+    UniqueRef<RenderingManager> m_RenderingManager;
     UniqueRef<Scene> m_ActiveScene;
     
 };

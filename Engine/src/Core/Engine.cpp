@@ -3,6 +3,7 @@
 #include "Scene.h"
 #include "Component.h"
 #include "Application.h"
+#include "RenderingManager.h"
 #include "../Components/Transform.h"
 
 #include <thread>
@@ -67,7 +68,8 @@ void EntityManager::OnUpdate()
 }
 
 Engine::Engine() :
-    m_EntityManager(CreateUniqueRef<EntityManager>())
+    m_EntityManager(CreateUniqueRef<EntityManager>()),
+    m_RenderingManager(CreateUniqueRef<RenderingManager>())
 {
     Object::Init(this);
     Application::Init(this);
@@ -95,6 +97,7 @@ void Engine::Start()
 void Engine::OnUpdate()
 {
     m_EntityManager->OnUpdate();
+    m_RenderingManager->OnUpdate();
 }
 
 void Engine::Stop(int exitCode)

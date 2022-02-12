@@ -7,4 +7,5 @@
 #include "Core/Scene.h"
 #include "Core/Behavior.h"
 #include "Core/Application.h"
+#include "Core/RenderingManager.h"
 #include "Components/Transform.h"
