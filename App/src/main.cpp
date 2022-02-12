@@ -55,6 +55,8 @@ public:
     virtual void OnUpdate() override
     {
         print(counter++);
+        auto dim = GetConsoleDimensions();
+        print(fmt::format("{{{}, {}}}", dim.x, dim.y));
         if (kbhit())
         {
             print(getch());
