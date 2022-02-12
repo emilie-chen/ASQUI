@@ -1,12 +1,15 @@
 #include "RenderingManager.h"
+#include "../Platform/NativeInput.h"
 #include <iostream>
 
 namespace AsquiEngine
 {
 
-RenderingManager::RenderingManager() :
-    m_Width(20), m_Height(20)
+RenderingManager::RenderingManager()
 {
+    auto size = Platform::GetConsoleDimensions();
+    m_Width = size.x;
+    m_Height = size.y;
     m_Buffer.resize(m_Width);
     for (size_t x = 0; x < m_Width; x++)
     {
@@ -20,6 +23,7 @@ RenderingManager::RenderingManager() :
             m_Buffer[x][y] = std::make_tuple(' ', Code::BG_RED);
         }
     }
+    std::get<1>(m_Buffer[5][5]) = Code::BG_BLUE;
 }
 
 void RenderingManager::OnUpdate()
