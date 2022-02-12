@@ -1,42 +1,43 @@
 #include <iostream>
 #include <glm/glm.hpp>
 #include "AsquiEngine.h"
-#include <termios.h>
+#include "Platform/NativeInput.h"
+
 
 using namespace AsquiEngine;
+using namespace AsquiEngine::Platform;
 
 
-
-class BufferToggle
-{
-    private:
-        struct termios t;
-
-    public:
-
-        /*
-         * Disables buffered input
-         */
-
-        void off(void)
-        {
-            tcgetattr(fileno(stdin), &t); //get the current terminal I/O structure
-            t.c_lflag &= ~ICANON; //Manipulate the flag bits to do what you want it to do
-            tcsetattr(fileno(stdin), TCSANOW, &t); //Apply the new settings
-        }
-
-
-        /*
-         * Enables buffered input
-         */
-
-        void on(void)
-        {
-            tcgetattr(fileno(stdin), &t); //get the current terminal I/O structure
-            t.c_lflag |= ICANON; //Manipulate the flag bits to do what you want it to do
-            tcsetattr(fileno(stdin), TCSANOW, &t); //Apply the new settings
-        }
-};
+//class BufferToggle
+//{
+//    private:
+//        struct termios t;
+//
+//    public:
+//
+//        /*
+//         * Disables buffered input
+//         */
+//
+//        void off(void)
+//        {
+//            tcgetattr(fileno(stdin), &t); //get the current terminal I/O structure
+//            t.c_lflag &= ~ICANON; //Manipulate the flag bits to do what you want it to do
+//            tcsetattr(fileno(stdin), TCSANOW, &t); //Apply the new settings
+//        }
+//
+//
+//        /*
+//         * Enables buffered input
+//         */
+//
+//        void on(void)
+//        {
+//            tcgetattr(fileno(stdin), &t); //get the current terminal I/O structure
+//            t.c_lflag |= ICANON; //Manipulate the flag bits to do what you want it to do
+//            tcsetattr(fileno(stdin), TCSANOW, &t); //Apply the new settings
+//        }
+//};
 
 
 class TestBehavior : public Behavior
@@ -55,7 +56,11 @@ public:
     {
         system("clear");
         print(counter++);
-        print(getchar());
+        if (kbhit())
+        {
+            print(getch());
+        }
+        
         if (counter > 100)
         {
             Application::Quit();
@@ -78,8 +83,16 @@ int main()
 //        print(c);
 //        return;
 //    }
-    BufferToggle bt;
-    bt.off();
+//    {
+//        set_conio_terminal_mode();
+//
+//        while (!kbhit()) {
+//                /* do some work */
+//            }
+//            print(getch());
+//        return 0;
+//    }
+    set_conio_terminal_mode();
     Engine engine;
     {
         WeakRef<GameObject> obj = engine.NewGameObject();
