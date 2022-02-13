@@ -118,11 +118,12 @@ public:
 
 int main()
 {
-    {
-        MonoDomain *domain;
-
-        domain = mono_jit_init("Test domain");
-    }
+//    {
+//        MonoDomain *domain;
+//
+//        domain = mono_jit_init("Test domain");
+//        return 0;
+//    }
     set_conio_terminal_mode();
     Engine engine;
     {
