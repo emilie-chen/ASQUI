@@ -8,7 +8,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     set(MONO_LIB ${MONO_PATH}/lib/libmonosgen-2.0.a)
 else()
     set(MONO_INCLUDE "/usr/include/mono-2.0")
-    set(MONO_LIB "/usr/lib/libmono2.0.so")
+    set(MONO_LIB "/usr/lib/libmono-2.0.so")
 endif()
 
 target_include_directories(Engine
