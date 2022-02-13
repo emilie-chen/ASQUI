@@ -2,6 +2,8 @@
 #include <glm/glm.hpp>
 #include "AsquiEngine.h"
 #include "Platform/NativeInput.h"
+#include <mono/jit/jit.h>
+#include <mono/metadata/assembly.h>
 
 
 using namespace AsquiEngine;
@@ -116,28 +118,11 @@ public:
 
 int main()
 {
-//    {
-//        BufferToggle bt;
-//        bt.off();
-//            char c = std::getchar(); //waits for you to press enter before proceeding to the next instruction
-//        print(c);
-//            bt.off();
-//            c = std::getchar(); //processes next instruction as soon as you type a character (no enter)
-//        print(c);
-//            bt.on();
-//            c = std::getchar(); //waits for you to press enter before proceeding to the next instruction
-//        print(c);
-//        return;
-//    }
-//    {
-//        set_conio_terminal_mode();
-//
-//        while (!kbhit()) {
-//                /* do some work */
-//            }
-//            print(getch());
-//        return 0;
-//    }
+    {
+        MonoDomain *domain;
+
+        domain = mono_jit_init("Test domain");
+    }
     set_conio_terminal_mode();
     Engine engine;
     {
