@@ -3,8 +3,11 @@ cmake_minimum_required(VERSION 3.19)
 project(ASQUI)
 
 set(CMAKE_CXX_STANDARD 20)
+
+if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 enable_language(OBJC)
 enable_language(OBJCXX)
+endif()
 
 # vcpkg dependencies
 find_package(fmt CONFIG REQUIRED)
