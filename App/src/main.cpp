@@ -116,14 +116,43 @@ public:
     }
 };
 
-int main()
+template <typename T>
+typename std::conditional<std::is_same<MonoObject, T>::value, MonoObject*, T>::type Invoke( MonoAssembly* assembly, const std::string& nameSpace,const std::string& className, const std::string& functionName, int paramCount, void** params)
 {
-//    {
-//        MonoDomain *domain;
-//
-//        domain = mono_jit_init("Test domain");
-//        return 0;
-//    }
+    static_assert(!std::is_same<MonoObject*, T>::value);
+    //MonoAssembly* assembly;
+    MonoImage* image = mono_assembly_get_image (assembly);
+    MonoClass* TestMonoBehaviorProgramClass = mono_class_from_name(image, nameSpace.c_str(), className.c_str());
+    MonoMethod* TestMethod = mono_class_get_method_from_name(TestMonoBehaviorProgramClass,functionName.c_str(),paramCount);
+    MonoObject* result = mono_runtime_invoke(TestMethod, nullptr, params ,nullptr );
+
+    if constexpr (std::is_same<MonoObject, T>::value)
+    {
+        return result;
+    }
+    return *(T*) mono_object_unbox(result);
+}
+
+
+int main(int argc, char** argv)
+{
+    {
+        MonoDomain *domain;
+        domain = mono_jit_init("Test domain");
+        MonoAssembly *assembly;
+
+        assembly = mono_domain_assembly_open (domain, argv[1]);
+        if (!assembly) panic();
+
+        MonoImage* image = mono_assembly_get_image (assembly);
+        void *args[1];
+        int v = 10;
+        args[0] = &v;
+        int unpackedResult = Invoke<int>(assembly, "Test_Domain", "TestMonoBehaviourProgram", "TestFunction", 1, args);
+        print(unpackedResult);
+
+        return 0;
+    }
     set_conio_terminal_mode();
     Engine engine;
     {
